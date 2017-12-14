@@ -1,0 +1,78 @@
+logging:
+  level:
+    tk.mybatis: DEBUG
+    com.tencloud.lux.security.admin: DEBUG
+info:
+  version: "@project.version@"
+zuul:
+  ignored-services: "*"
+  sensitive-headers:
+  prefix: /api #为zuul设置一个公共的前缀
+  ratelimit: # 网关限流
+    key-prefix: gate_rate
+    enabled: true
+    repository: REDIS #REDIS, JPA, IN_MEMORY
+    behind-proxy: true
+    default-policy: #optional - will apply unless specific policy exists
+      limit: 10
+      refresh-interval: 60 #default value (in seconds)
+      type: #optional
+        - user
+        - origin
+        - url
+  routes:
+    back:
+      path: /admin/**
+      serviceId: lux-admin
+
+    auth:
+      path: /auth/**
+      serviceId: lux-auth
+spring:
+  application:
+    name: "@project.artifactId@"
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: NON_NULL
+  rabbitmq:
+    host: 192.168.113.18
+    port: 35672
+    username: admin
+    password: Rabbit_fy_123
+    virtual-host: /
+  redis:
+    cluster:
+      nodes:
+      - 192.168.113.18:6379
+      - 192.168.113.18:6380
+      - 192.168.113.19:6379
+      - 192.168.113.19:6380
+      - 192.168.113.20:6379
+      - 192.168.113.20:6380
+    password: hhly_new_pass
+    timeout: 20000
+    pool:
+      max-active: 8
+      max-idle: 8
+      min-idle: 0
+      #max-wait: -1
+
+hystrix:
+  metrics:
+    enabled: true
+feign:
+  hystrix:
+    enabled: true   ##需要开启此配置，不然不生效
+auth:
+  serviceId: lux-auth
+  user:
+    token-header: Authorization
+    pub-key:
+      path: jwt/pub.key
+  client:
+    token-header: client-token
+    id: lux-gate  #不填则默认读取spring.application.name
+    secret: 123456
+    pub-key:
+      path: client/pub.key

@@ -1,0 +1,11 @@
+server:
+    port: 5688 #启动端口
+
+spring:
+    application:
+        name: lux-sidecar-server
+
+sidecar:
+    port: 5680 #python接口
+    health:
+        uri: http://localhost:${sidecar.port}/health

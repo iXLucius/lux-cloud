@@ -1,0 +1,31 @@
+info:
+  version: "@project.version@"
+server:
+  port: 9411
+spring:
+  application:
+    name: "@project.artifactId@"
+  sleuth:
+    enabled: false
+  datasource:
+    #schema:
+    #- classpath:/zipkin.sql
+    name: fy-zipkin
+    url: jdbc:mysql://192.168.113.19:3306/fy-zipkin?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: mhaadmin
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    #initialize: true
+    #continue-on-error: true
+  rabbitmq:
+    host: 192.168.113.18
+    port: 35672
+    username: admin
+    password: Rabbit_fy_123
+    virtual-host: /
+zipkin:
+  storage:
+    type: mysql
+
+##zip的数据库表    
+##https://github.com/openzipkin/zipkin/blob/master/zipkin-storage/mysql/src/main/resources/mysql.sql
