@@ -1,0 +1,37 @@
+spring:
+  boot:
+    admin:
+      client:
+        enabled: true
+        prefer-ip: true
+  cloud:
+    consul:
+      host: 192.168.113.18
+      port: 8500
+      enabled: true
+      retry:
+        max-attempts: 10
+        max-interval: 2000
+      discovery:
+        enabled: true
+        health-check-interval: 10s
+        tags:
+        - dev
+        prefer-ip-address: true
+      config:
+        enabled: true
+        format: YAML
+        data-key: configuration
+  profiles:
+    active:
+    - test          ##使用测试配置，Consul中节点为：/config/org.lucius.microservice.user.service,test/configuration
+                    ##Consul中全局配置：/config/application/configuration | config/application,dev/configuration 
+hystrix:
+  metrics:
+    enabled: true
+feign:
+  hystrix:
+    enabled: true   ##需要开启此配置，不然不生效
+management:
+  security:
+    enabled: false   

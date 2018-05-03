@@ -1,0 +1,64 @@
+spring:
+  boot:
+    admin:
+      client:
+        enabled: true
+        prefer-ip: true
+#  zipkin:
+#    locator:
+#      discovery:
+#        enabled: true
+#    service:
+#      name: lux-tracker
+  sleuth:
+    sampler:
+      percentage: 1.0
+  cloud:
+    stream:
+      kafka: 
+        binder:
+          brokers: 192.168.113.19:9092
+          zkNodes: 192.168.113.19:2181
+    consul:
+      host: 192.168.113.18
+      port: 8500
+      enabled: true
+      retry:
+        max-attempts: 10
+        max-interval: 2000
+      discovery:
+        enabled: true
+        health-check-interval: 10s
+        tags:
+        - dev
+        prefer-ip-address: true
+        #health-check-url: http://admin:admin@localhost:8765/health
+      config:
+        enabled: true
+        format: YAML
+        data-key: configuration
+  profiles:
+    active: test
+hystrix:
+  metrics:
+    enabled: true
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+#请求和响应GZIP压缩支持
+feign:
+  hystrix:
+    enabled: false
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: true
+management:
+  security:
+    enabled: false #######想要开启服务监控的话，需要添加该配置项
